@@ -11,7 +11,7 @@ $ npm install mongoose-profiler --save-dev
 ## Quick start
 ```js
 const mongooseProfiler = require('mongoose-profiler');
-mongoose.plugin(mongooseProfiler());
+schema.plugin(mongooseProfiler());
 ```
 
 ```js
@@ -92,7 +92,7 @@ Mongoose:      64ms Products.find({ state: 'active', owner: { '$in': [ ObjectId(
 ### Options
 ```js
 const mongooseProfiler = require('mongoose-profiler');
-mongoose.plugin(mongooseProfiler({
+schema.plugin(mongooseProfiler({
   isAlwaysShowQuery: true,
   duration: 1000,
   totalDocsExamined: 1000,
