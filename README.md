@@ -100,8 +100,8 @@ schema.plugin(mongooseProfiler({
 }));
 ```
   Name                     |        Type      |   Default  |  Description
-:-----------------:|:-----------:|:--------:|:-----------:
+:------------------|:------------|:---------|:------------
  isAlwaysShowQuery | Boolean         |    true     |     
  duration     |  Number        |  1000ms  |  Show the explain result when the query took more than this time.<br/>(The time from `pre()` to `post()`.)
  totalDocsExamined |  Number        |               | Show the explain result when the query examined documents more than this number.
- level                     |  String           | COLLSCAN |ALL: Show the explain result of all queries.<br/>COLLSCAN: Show the explain result when the mongodb scan collections.
+ level                     |  String           | COLLSCAN |`ALL`: Show the explain result of all queries.<br/>`COLLSCAN`: Show the explain result when the mongodb scan collections.
