@@ -1,2 +1,107 @@
 # mongoose-profiler
-A performance tuning tool for Mongoose.
+This is a [mongoose](https://mongoosejs.com) plugin for tuning performance.  
+It will show the [explain results](https://docs.mongodb.com/manual/reference/explain-results/) on the console when the query is slow.  
+Such as mongodb scans all documents in the collection without index.
+
+## Installation
+```bash
+$ npm install mongoose-profiler --save-dev
+```
+
+## Quick start
+```js
+const mongooseProfiler = require('mongoose-profiler');
+mongoose.plugin(mongooseProfiler());
+```
+
+```js
+ProductModel
+  .where({state: 'active'})
+  .where({owner: {$in: ['5c9d9428e7462d3d989cb69b', '5c9d95acea5c9b4036d97c88']}})
+  .limit(100);
+```
+When you execute this query without the index then you will get some messages on the console.
+```base
+Mongoose:      64ms Products.find({ state: 'active', owner: { '$in': [ ObjectId("5c9d9428e7462d3d989cb69b"), ObjectId("5c9d95acea5c9b4036d97c88") ] } }, { skip: 0, limit: 100 })
+[ { queryPlanner:
+     { plannerVersion: 1,
+       namespace: 'database.Products',
+       indexFilterSet: false,
+       parsedQuery:
+        { '$and':
+           [ { state: { '$eq': 'active' } },
+             { owne:
+                { '$in':
+                   [ ObjectID {
+                       _bsontype: 'ObjectID',
+                       id: Buffer [Uint8Array] [ ... ] },
+                     ObjectID {
+                       _bsontype: 'ObjectID',
+                       id: Buffer [Uint8Array] [ ... ] } ] } } ] },
+       winningPlan:
+        { stage: 'LIMIT',
+          limitAmount: 100,
+          inputStage:
+           { stage: 'COLLSCAN',
+             filter:
+              { '$and':
+                 [ { state: { '$eq': 'active' } },
+                   { owne:
+                      { '$in':
+                         [ ObjectID {
+                             _bsontype: 'ObjectID',
+                             id: Buffer [Uint8Array] [ ... ] },
+                           ObjectID {
+                             _bsontype: 'ObjectID',
+                             id: Buffer [Uint8Array] [ ... ] } ] } } ] },
+             direction: 'forward' } },
+       rejectedPlans: [] },
+    executionStats:
+     { executionSuccess: true,
+       nReturned: 1,
+       executionTimeMillis: 0,
+       totalKeysExamined: 0,
+       totalDocsExamined: 9,
+       executionStages:
+        { stage: 'LIMIT',
+          nReturned: 1,
+          ...
+          inputStage:
+           { stage: 'COLLSCAN',
+             filter:
+              { '$and':
+                 [ { state: { '$eq': 'active' } },
+                   { owne:
+                      { '$in':
+                         [ ObjectID {
+                             _bsontype: 'ObjectID',
+                             id: Buffer [Uint8Array] [ ... ] },
+                           ObjectID {
+                             _bsontype: 'ObjectID',
+                             id: Buffer [Uint8Array] [ ... ] } ] } } ] },
+             nReturned: 1,
+             ...
+             docsExamined: 9 } },
+       allPlansExecution: [] },
+    serverInfo:
+     { ... },
+    ok: 1 } ]
+```
+
+## Document
+### Options
+```js
+const mongooseProfiler = require('mongoose-profiler');
+mongoose.plugin(mongooseProfiler({
+  isAlwaysShowQuery: true,
+  duration: 1000,
+  totalDocsExamined: 1000,
+  level: 'COLLSCAN'
+}));
+```
+  Name                     |        Type      |   Default  |  Description
+:-----------------:|:-----------:|:--------:|:-----------:
+ isAlwaysShowQuery | Boolean         |    true     |     
+ duration     |  Number        |  1000ms  |  Show the explain result when the query took more than this time.<br/>(The time from `pre()` to `post()`.)
+ totalDocsExamined |  Number        |               | Show the explain result when the query examined documents more than this number.
+ level                     |  String           | COLLSCAN |ALL: Show the explain result of all queries.<br/>COLLSCAN: Show the explain result when the mongodb scan collections.
