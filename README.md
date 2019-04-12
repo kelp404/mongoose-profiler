@@ -88,7 +88,7 @@ Mongoose:      64ms Products.find({ state: 'active', owner: { '$in': [ ObjectId(
     ok: 1 } ]
 ```
 
-## Document
+## mongooseProfiler()
 ### Options
 ```js
 const mongooseProfiler = require('mongoose-profiler');
