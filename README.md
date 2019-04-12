@@ -14,13 +14,13 @@ const mongooseProfiler = require('mongoose-profiler');
 schema.plugin(mongooseProfiler());
 ```
 
+When you execute this query without the index then you will get some messages on the console.
 ```js
 ProductModel
   .where({state: 'active'})
   .where({owner: {$in: ['5c9d9428e7462d3d989cb69b', '5c9d95acea5c9b4036d97c88']}})
   .limit(100);
 ```
-When you execute this query without the index then you will get some messages on the console.
 ```base
 Mongoose:      64ms Products.find({ state: 'active', owner: { '$in': [ ObjectId("5c9d9428e7462d3d989cb69b"), ObjectId("5c9d95acea5c9b4036d97c88") ] } }, { skip: 0, limit: 100 })
 [ { queryPlanner:
