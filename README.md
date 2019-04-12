@@ -89,7 +89,6 @@ Mongoose:      64ms Products.find({ state: 'active', owner: { '$in': [ ObjectId(
 ```
 
 ## mongooseProfiler()
-### Options
 ```js
 const mongooseProfiler = require('mongoose-profiler');
 schema.plugin(mongooseProfiler({
@@ -99,6 +98,7 @@ schema.plugin(mongooseProfiler({
   level: 'COLLSCAN'
 }));
 ```
+### Options
   Name                     |        Type      |   Default  |  Description
 :------------------|:------------|:---------|:------------
  isAlwaysShowQuery | Boolean         |    true     |     
