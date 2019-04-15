@@ -1,5 +1,6 @@
 # mongoose-profiler
 [![npm version](https://badge.fury.io/js/mongoose-profiler.svg)](https://www.npmjs.com/package/mongoose-profiler)
+[![CircleCI](https://circleci.com/gh/kelp404/mongoose-profiler.svg?style=svg)](https://circleci.com/gh/kelp404/mongoose-profiler)
 
 This is a [mongoose](https://mongoosejs.com) plugin for tuning performance.  
 It will show the [explain results](https://docs.mongodb.com/manual/reference/explain-results/) on the console when the query is slow.  
