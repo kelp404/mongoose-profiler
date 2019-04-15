@@ -10,9 +10,11 @@ module.exports = {
     'xo-space'
   ],
   globals: {
+    jest: 'readonly',
     test: 'readonly',
     expect: 'readonly',
-    jest: 'readonly'
+    beforeEach: 'readonly',
+    afterEach: 'readonly'
   },
   parserOptions: {
     ecmaFeatures: {},
