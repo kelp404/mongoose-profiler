@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/jest/bin/jest.js --coverage",
-    "coveralls": "./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info"
+    "coveralls": "./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info",
+    "ncu": "./node_modules/npm-check-updates/bin/ncu"
   },
   "repository": {
     "type": "git",
@@ -17,16 +18,20 @@
     "url": "https://github.com/kelp404/mongoose-profiler/issues"
   },
   "homepage": "https://github.com/kelp404/mongoose-profiler#readme",
+  "keywords": [
+    "mongoose",
+    "mongodb"
+  ],
   "dependencies": {
     "left-pad": "1.3.0"
   },
   "devDependencies": {
     "coveralls": "3.0.3",
-    "eslint": "5.15.3",
+    "eslint": "5.16.0",
     "eslint-config-xo": "0.26.0",
     "eslint-config-xo-space": "0.21.0",
     "jest": "24.7.1",
     "mockdate": "2.0.2",
-    "npm-check-updates": "3.1.7"
+    "npm-check-updates": "3.1.8"
   }
 }
