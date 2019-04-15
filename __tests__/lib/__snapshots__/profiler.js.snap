@@ -6,10 +6,20 @@ Object {
 }
 `;
 
+exports[`Options of Profiler. 1`] = `
+Object {
+  "duration": 500,
+  "isAlwaysShowQuery": false,
+  "level": "ALL",
+  "totalDocsExamined": 200,
+}
+`;
+
 exports[`The default options of Profiler. 1`] = `
 Object {
   "duration": 1000,
   "isAlwaysShowQuery": true,
   "level": "COLLSCAN",
+  "totalDocsExamined": undefined,
 }
 `;
