@@ -24,6 +24,7 @@ jobs:
       - checkout
       - run: npm install
       - run: npm test
+      - run: npm run coveralls
 
   node11:
     working_directory: ~/mongoose-profiler

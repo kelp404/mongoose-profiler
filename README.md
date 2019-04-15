@@ -1,5 +1,6 @@
 # mongoose-profiler
 [![npm version](https://badge.fury.io/js/mongoose-profiler.svg)](https://www.npmjs.com/package/mongoose-profiler)
+[![Coverage Status](https://coveralls.io/repos/github/kelp404/mongoose-profiler/badge.svg?branch=master)](https://coveralls.io/github/kelp404/mongoose-profiler?branch=master)
 [![CircleCI](https://circleci.com/gh/kelp404/mongoose-profiler.svg?style=svg)](https://circleci.com/gh/kelp404/mongoose-profiler)
 
 This is a [mongoose](https://mongoosejs.com) plugin for tuning performance.  
