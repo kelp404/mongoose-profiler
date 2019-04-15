@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`\`preFunction()\` will add a member \`startTime\`. 1`] = `
+Object {
+  "startTime": 2019-04-15T00:00:00.000Z,
+}
+`;
+
 exports[`The default options of Profiler. 1`] = `
 Object {
   "duration": 1000,

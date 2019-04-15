@@ -10,8 +10,8 @@ module.exports = {
     'xo-space'
   ],
   globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
+    test: 'readonly',
+    expect: 'readonly'
   },
   parserOptions: {
     ecmaFeatures: {},
