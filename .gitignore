@@ -9,7 +9,6 @@ package-lock.json
 dist/
 
 # test scripts
-__tests__/*.js
 coverage/
 
 # WebStorm
