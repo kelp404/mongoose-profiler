@@ -1,5 +1,6 @@
 # mongoose-profiler
 [![npm version](https://badge.fury.io/js/mongoose-profiler.svg)](https://www.npmjs.com/package/mongoose-profiler)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/kelp404/mongoose-profiler.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kelp404/mongoose-profiler/context:javascript)
 [![Coverage Status](https://coveralls.io/repos/github/kelp404/mongoose-profiler/badge.svg?branch=master&a)](https://coveralls.io/github/kelp404/mongoose-profiler?branch=master)
 [![CircleCI](https://circleci.com/gh/kelp404/mongoose-profiler.svg?style=svg)](https://circleci.com/gh/kelp404/mongoose-profiler)
 
