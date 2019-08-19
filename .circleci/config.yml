@@ -5,12 +5,12 @@ workflows:
     jobs:
       - node8
       - node10
-      - node11
+      - node12
 jobs:
   node8:
     working_directory: ~/mongoose-profiler
     docker:
-      - image: node:8.15.1
+      - image: node:8.16.1
     steps:
       - checkout
       - run: npm install
@@ -19,18 +19,18 @@ jobs:
   node10:
     working_directory: ~/mongoose-profiler
     docker:
-      - image: node:10.15.0
+      - image: node:10.16.3
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm test
+
+  node12:
+    working_directory: ~/mongoose-profiler
+    docker:
+      - image: node:12.8.1
     steps:
       - checkout
       - run: npm install
       - run: npm test
       - run: npm run coveralls
-
-  node11:
-    working_directory: ~/mongoose-profiler
-    docker:
-      - image: node:11.6.0
-    steps:
-      - checkout
-      - run: npm install
-      - run: npm test
