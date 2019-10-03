@@ -197,3 +197,35 @@ test('Does not show anything for the index scan query.', () => {
     expect.anything()
   );
 });
+
+test('Call custom log function to explain the result.', () => {
+  let logFunction = jest.fn(result => result);
+
+  const profiler = new Profiler({
+    isAlwaysShowQuery: false,
+    log: logFunction
+  });
+  const _this = {
+    mongooseCollection: {
+      $print: jest.fn()
+    },
+    _collection: {
+      find: jest.fn((conditions, options, callback) => {
+        callback(null, explainResult.withCollectionScan);
+        expect(_this.mongooseCollection.$print).toHaveBeenCalled();
+        expect(logFunction).toBeCalledWith(
+          explainResult.withCollectionScan
+        );
+      })
+    },
+    op: 'find',
+    _conditions: {state: 'active'},
+    options: {skip: 0, limit: 100}
+  };
+  profiler.postFunction.apply(_this, [{}, () => {}]);
+  expect(_this._collection.find).toBeCalledWith(
+    {state: 'active'},
+    {explain: true, skip: 0, limit: 100},
+    expect.anything()
+  );
+});

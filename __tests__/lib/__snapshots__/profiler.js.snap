@@ -11,6 +11,7 @@ Object {
   "duration": 500,
   "isAlwaysShowQuery": false,
   "level": "ALL",
+  "log": [Function],
   "totalDocsExamined": 200,
 }
 `;
@@ -20,6 +21,7 @@ Object {
   "duration": 1000,
   "isAlwaysShowQuery": true,
   "level": "COLLSCAN",
+  "log": [Function],
   "totalDocsExamined": undefined,
 }
 `;
