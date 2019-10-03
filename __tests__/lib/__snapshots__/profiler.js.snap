@@ -12,6 +12,7 @@ Object {
   "isAlwaysShowQuery": false,
   "level": "ALL",
   "log": [Function],
+  "logError": [Function],
   "totalDocsExamined": 200,
 }
 `;
@@ -22,6 +23,7 @@ Object {
   "isAlwaysShowQuery": true,
   "level": "COLLSCAN",
   "log": [Function],
+  "logError": [Function],
   "totalDocsExamined": undefined,
 }
 `;

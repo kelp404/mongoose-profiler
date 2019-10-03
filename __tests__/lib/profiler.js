@@ -229,3 +229,28 @@ test('Call custom log function to explain the result.', () => {
     expect.anything()
   );
 });
+
+test('Call custom error log function when the explain query got error.', () => {
+  const logError = jest.fn(result => result);
+  const profiler = new Profiler({
+    logError: logError
+  });
+  const _this = {
+    _collection: {
+      find: jest.fn((conditions, options, callback) => {
+        const error = 'fake error';
+        callback(error, null);
+        expect(logError).toBeCalledWith(error);
+      })
+    },
+    op: 'find',
+    _conditions: {state: 'active'},
+    options: {skip: 0, limit: 100}
+  };
+  profiler.postFunction.apply(_this, [{}, () => {}]);
+  expect(_this._collection.find).toBeCalledWith(
+    {state: 'active'},
+    {explain: true, skip: 0, limit: 100},
+    expect.anything()
+  );
+});
