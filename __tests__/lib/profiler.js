@@ -203,7 +203,9 @@ test('Call custom log function to explain the result.', () => {
 
   const profiler = new Profiler({
     isAlwaysShowQuery: false,
-    log: logFunction
+    logger: {
+      info: logFunction
+    }
   });
   const _this = {
     mongooseCollection: {
@@ -233,7 +235,9 @@ test('Call custom log function to explain the result.', () => {
 test('Call custom error log function when the explain query got error.', () => {
   const logError = jest.fn(result => result);
   const profiler = new Profiler({
-    logError: logError
+    logger: {
+      error: logError
+    }
   });
   const _this = {
     _collection: {

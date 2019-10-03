@@ -11,8 +11,10 @@ Object {
   "duration": 500,
   "isAlwaysShowQuery": false,
   "level": "ALL",
-  "log": [Function],
-  "logError": [Function],
+  "logger": Object {
+    "error": [Function],
+    "info": [Function],
+  },
   "totalDocsExamined": 200,
 }
 `;
@@ -22,8 +24,10 @@ Object {
   "duration": 1000,
   "isAlwaysShowQuery": true,
   "level": "COLLSCAN",
-  "log": [Function],
-  "logError": [Function],
+  "logger": Object {
+    "error": [Function],
+    "info": [Function],
+  },
   "totalDocsExamined": undefined,
 }
 `;
