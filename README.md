@@ -5,8 +5,8 @@
 [![Actions Status](https://github.com/kelp404/mongoose-profiler/workflows/build/badge.svg)](https://github.com/kelp404/mongoose-profiler/actions)
 
 This is a [mongoose](https://mongoosejs.com) plugin for tuning performance.  
-It will show the [explain results](https://docs.mongodb.com/manual/reference/explain-results/) on the console when the query is slow.  
-Such as mongodb scans all documents in the collection without index.
+It will show the [explain results](https://docs.mongodb.com/manual/reference/explain-results/) on the console when the query is slow. Such as mongodb scans all documents in the collection without index.  
+**Don't use it on production.**
 
 ## Installation
 ```bash
