@@ -23,9 +23,6 @@
     "mongoose",
     "mongodb"
   ],
-  "dependencies": {
-    "left-pad": "1.3.0"
-  },
   "devDependencies": {
     "coveralls": "3.0.3",
     "eslint": "5.16.0",
