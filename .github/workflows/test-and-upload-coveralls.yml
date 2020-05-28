@@ -1,0 +1,23 @@
+name: test and upload coveralls
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run eslint
+      - run: npm test
+      - name: Upload to coveralls.io
+        if: ${{ matrix.node-version == '14.x' }}
+        run: npm run coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}

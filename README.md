@@ -2,7 +2,7 @@
 [![npm version](https://badge.fury.io/js/mongoose-profiler.svg)](https://www.npmjs.com/package/mongoose-profiler)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/kelp404/mongoose-profiler.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kelp404/mongoose-profiler/context:javascript)
 [![Coverage Status](https://coveralls.io/repos/github/kelp404/mongoose-profiler/badge.svg?branch=master&a)](https://coveralls.io/github/kelp404/mongoose-profiler?branch=master)
-[![Actions Status](https://github.com/kelp404/mongoose-profiler/workflows/build/badge.svg)](https://github.com/kelp404/mongoose-profiler/actions)
+[![Actions Status](https://github.com/kelp404/mongoose-profiler/workflows/test%20and%20upload%20coveralls/badge.svg)](https://github.com/kelp404/mongoose-profiler/actions)
 
 This is a [mongoose](https://mongoosejs.com) plugin for tuning performance.  
 It will show the [explain results](https://docs.mongodb.com/manual/reference/explain-results/) on the console when the query is slow. Such as mongodb scans all documents in the collection without index.  
