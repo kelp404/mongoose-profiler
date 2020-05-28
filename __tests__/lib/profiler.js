@@ -51,11 +51,11 @@ test('`postFunction()` will call mongoose query function with explain arguments.
 });
 
 test('Show the error message at the console when the explain query got error.', () => {
+  jest.spyOn(console, 'error');
   const profiler = new Profiler();
   const _this = {
     _collection: {
       find: jest.fn((conditions, options, callback) => {
-        jest.spyOn(console, 'error');
         const error = 'fake error';
         callback(error, null);
         expect(console.error).toBeCalledWith(error);
