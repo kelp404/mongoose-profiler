@@ -10,6 +10,10 @@
     "coveralls": "./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info",
     "ncu": "./node_modules/npm-check-updates/bin/ncu"
   },
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kelp404/mongoose-profiler.git"
