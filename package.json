@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "changelog": "node_modules/conventional-changelog-cli/cli.js -p angular",
-    "eslint": "./node_modules/eslint/bin/eslint.js ./ --ignore-path .gitignore",
-    "test": "./node_modules/jest/bin/jest.js --coverage",
+    "eslint": "node_modules/eslint/bin/eslint.js ./ --ignore-path .gitignore",
+    "test": "node_modules/jest/bin/jest.js --coverage",
     "coveralls": "./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info",
-    "ncu": "./node_modules/npm-check-updates/bin/ncu"
+    "ncu": "node_modules/npm-check-updates/bin/npm-check-updates.js"
   },
   "files": [
     "lib",
