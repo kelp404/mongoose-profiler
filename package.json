@@ -8,7 +8,7 @@
     "eslint": "node_modules/eslint/bin/eslint.js ./ --ignore-path .gitignore",
     "test": "node_modules/jest/bin/jest.js --coverage",
     "coveralls": "./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info",
-    "ncu": "node_modules/npm-check-updates/bin/npm-check-updates.js"
+    "ncu": "node_modules/npm-check-updates/bin/cli.js"
   },
   "files": [
     "lib",
@@ -36,6 +36,6 @@
     "eslint-config-xo-space": "0.25.0",
     "jest": "26.0.1",
     "mockdate": "3.0.2",
-    "npm-check-updates": "7.0.1"
+    "npm-check-updates": "8.0.2"
   }
 }
