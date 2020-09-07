@@ -36,6 +36,6 @@
     "eslint-config-xo-space": "0.25.0",
     "jest": "26.4.2",
     "mockdate": "3.0.2",
-    "npm-check-updates": "8.0.2"
+    "npm-check-updates": "8.1.0"
   }
 }
