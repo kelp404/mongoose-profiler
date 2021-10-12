@@ -24,11 +24,11 @@ exports.withoutCollectionScan = [{
                   isPartial: false,
                   indexVersion: 2,
                   direction: 'forward',
-                  indexBounds: {'title.zh-TW': ['[MinKey, MaxKey]']}
-                }
-            }
+                  indexBounds: {'title.zh-TW': ['[MinKey, MaxKey]']},
+                },
+            },
         },
-      rejectedPlans: []
+      rejectedPlans: [],
     },
   executionStats:
     {
@@ -93,20 +93,20 @@ exports.withoutCollectionScan = [{
                   seeks: 1,
                   dupsTested: 0,
                   dupsDropped: 0,
-                  seenInvalidated: 0
-                }
-            }
+                  seenInvalidated: 0,
+                },
+            },
         },
-      allPlansExecution: []
+      allPlansExecution: [],
     },
   serverInfo:
     {
       host: '127.0.0.1',
       port: 27017,
       version: '4.0.2',
-      gitVersion: 'fc1573ba18aee42f97a3bb13b67af7d837826b47'
+      gitVersion: 'fc1573ba18aee42f97a3bb13b67af7d837826b47',
     },
-  ok: 1
+  ok: 1,
 }];
 
 exports.withCollectionScan = [{
@@ -124,10 +124,10 @@ exports.withCollectionScan = [{
           inputStage:
             {
               stage: 'SORT_KEY_GENERATOR',
-              inputStage: {stage: 'COLLSCAN', direction: 'forward'}
-            }
+              inputStage: {stage: 'COLLSCAN', direction: 'forward'},
+            },
         },
-      rejectedPlans: []
+      rejectedPlans: [],
     },
   executionStats:
     {
@@ -180,18 +180,18 @@ exports.withCollectionScan = [{
                   isEOF: 1,
                   invalidates: 0,
                   direction: 'forward',
-                  docsExamined: 22
-                }
-            }
+                  docsExamined: 22,
+                },
+            },
         },
-      allPlansExecution: []
+      allPlansExecution: [],
     },
   serverInfo:
     {
       host: '127.0.0.1',
       port: 27017,
       version: '4.0.2',
-      gitVersion: 'fc1573ba18aee42f97a3bb13b67af7d837826b47'
+      gitVersion: 'fc1573ba18aee42f97a3bb13b67af7d837826b47',
     },
-  ok: 1
+  ok: 1,
 }];

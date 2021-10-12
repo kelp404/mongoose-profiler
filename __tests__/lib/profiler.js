@@ -17,7 +17,7 @@ test('Options of Profiler.', () => {
     isAlwaysShowQuery: false,
     duration: 500,
     totalDocsExamined: 200,
-    level: 'ALL'
+    level: 'ALL',
   });
   expect(profiler.options).toMatchSnapshot();
 });
@@ -34,18 +34,18 @@ test('`postFunction()` will call mongoose query function with explain arguments.
   const profiler = new Profiler();
   const _this = {
     _collection: {
-      find: jest.fn()
+      find: jest.fn(),
     },
     op: 'find',
     _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100}
+    options: {skip: 0, limit: 100},
   };
   const next = jest.fn();
   profiler.postFunction.apply(_this, [{}, next]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything()
+    expect.anything(),
   );
   expect(next).toBeCalled();
 });
@@ -59,17 +59,17 @@ test('Show the error message at the console when the explain query got error.', 
         const error = 'fake error';
         callback(error, null);
         expect(console.error).toBeCalledWith(error);
-      })
+      }),
     },
     op: 'find',
     _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100}
+    options: {skip: 0, limit: 100},
   };
   profiler.postFunction.apply(_this, [{}, () => {}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything()
+    expect.anything(),
   );
 });
 
@@ -78,7 +78,7 @@ test('Show the query information at the console.', () => {
   const _this = {
     mongooseCollection: {
       collectionName: 'CollectionName',
-      $print: jest.fn()
+      $print: jest.fn(),
     },
     _collection: {
       find: jest.fn((conditions, options, callback) => {
@@ -87,14 +87,14 @@ test('Show the query information at the console.', () => {
         expect(_this.mongooseCollection.$print).toBeCalledWith(
           '      1ms CollectionName',
           'find',
-          [_this._conditions, _this.options]
+          [_this._conditions, _this.options],
         );
         expect(console.dir).not.toBeCalled();
-      })
+      }),
     },
     op: 'find',
     _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100}
+    options: {skip: 0, limit: 100},
   };
   MockDate.set(new Date('2019-04-15T00:00:00.000Z'));
   profiler.preFunction.apply(_this);
@@ -103,17 +103,17 @@ test('Show the query information at the console.', () => {
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything()
+    expect.anything(),
   );
 });
 
 test('Show the explain result at the console.', () => {
   const profiler = new Profiler({
-    isAlwaysShowQuery: false
+    isAlwaysShowQuery: false,
   });
   const _this = {
     mongooseCollection: {
-      $print: jest.fn()
+      $print: jest.fn(),
     },
     _collection: {
       find: jest.fn((conditions, options, callback) => {
@@ -122,29 +122,29 @@ test('Show the explain result at the console.', () => {
         expect(_this.mongooseCollection.$print).toHaveBeenCalled();
         expect(console.dir).toBeCalledWith(
           explainResult.withCollectionScan,
-          {depth: null, colors: true}
+          {depth: null, colors: true},
         );
-      })
+      }),
     },
     op: 'find',
     _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100}
+    options: {skip: 0, limit: 100},
   };
   profiler.postFunction.apply(_this, [{}, () => {}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything()
+    expect.anything(),
   );
 });
 
 test('Show the explain result at the console when the total docs examined is over.', () => {
   const profiler = new Profiler({
-    totalDocsExamined: 0
+    totalDocsExamined: 0,
   });
   const _this = {
     mongooseCollection: {
-      $print: jest.fn()
+      $print: jest.fn(),
     },
     _collection: {
       find: jest.fn((conditions, options, callback) => {
@@ -153,30 +153,30 @@ test('Show the explain result at the console when the total docs examined is ove
         expect(_this.mongooseCollection.$print).toHaveBeenCalled();
         expect(console.dir).toBeCalledWith(
           explainResult.withoutCollectionScan,
-          {depth: null, colors: true}
+          {depth: null, colors: true},
         );
-      })
+      }),
     },
     op: 'find',
     _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100}
+    options: {skip: 0, limit: 100},
   };
   profiler.postFunction.apply(_this, [{}, () => {}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything()
+    expect.anything(),
   );
 });
 
 test('Does not show anything for the index scan query.', () => {
   const profiler = new Profiler({
-    isAlwaysShowQuery: false
+    isAlwaysShowQuery: false,
   });
   const _this = {
     mongooseCollection: {
       collectionName: 'CollectionName',
-      $print: jest.fn()
+      $print: jest.fn(),
     },
     _collection: {
       find: jest.fn((conditions, options, callback) => {
@@ -184,51 +184,51 @@ test('Does not show anything for the index scan query.', () => {
         callback(null, explainResult.withoutCollectionScan);
         expect(_this.mongooseCollection.$print).not.toBeCalled();
         expect(console.dir).not.toBeCalled();
-      })
+      }),
     },
     op: 'find',
     _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100}
+    options: {skip: 0, limit: 100},
   };
   profiler.postFunction.apply(_this, [{}, () => {}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything()
+    expect.anything(),
   );
 });
 
 test('Call custom log function to explain the result.', () => {
-  let logFunction = jest.fn(result => result);
+  const logFunction = jest.fn(result => result);
 
   const profiler = new Profiler({
     isAlwaysShowQuery: false,
     logger: {
-      info: logFunction
-    }
+      info: logFunction,
+    },
   });
   const _this = {
     mongooseCollection: {
-      $print: jest.fn()
+      $print: jest.fn(),
     },
     _collection: {
       find: jest.fn((conditions, options, callback) => {
         callback(null, explainResult.withCollectionScan);
         expect(_this.mongooseCollection.$print).toHaveBeenCalled();
         expect(logFunction).toBeCalledWith(
-          explainResult.withCollectionScan
+          explainResult.withCollectionScan,
         );
-      })
+      }),
     },
     op: 'find',
     _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100}
+    options: {skip: 0, limit: 100},
   };
   profiler.postFunction.apply(_this, [{}, () => {}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything()
+    expect.anything(),
   );
 });
 
@@ -236,8 +236,8 @@ test('Call custom error log function when the explain query got error.', () => {
   const logError = jest.fn(result => result);
   const profiler = new Profiler({
     logger: {
-      error: logError
-    }
+      error: logError,
+    },
   });
   const _this = {
     _collection: {
@@ -245,16 +245,16 @@ test('Call custom error log function when the explain query got error.', () => {
         const error = 'fake error';
         callback(error, null);
         expect(logError).toBeCalledWith(error);
-      })
+      }),
     },
     op: 'find',
     _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100}
+    options: {skip: 0, limit: 100},
   };
   profiler.postFunction.apply(_this, [{}, () => {}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything()
+    expect.anything(),
   );
 });
