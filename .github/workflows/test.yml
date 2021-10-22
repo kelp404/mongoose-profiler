@@ -1,4 +1,4 @@
-name: test and upload coveralls
+name: test
 
 on: [push, pull_request]
 
