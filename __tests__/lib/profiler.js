@@ -33,6 +33,10 @@ test('`preFunction()` will add a member `startTime`.', () => {
 test('`postFunction()` will call mongoose query function with explain arguments.', () => {
   const profiler = new Profiler();
   const _this = {
+    mongooseCollection: {
+      collectionName: 'CollectionName',
+      $print: jest.fn(),
+    },
     _collection: {
       find: jest.fn(),
     },
@@ -40,40 +44,15 @@ test('`postFunction()` will call mongoose query function with explain arguments.
     _conditions: {state: 'active'},
     options: {skip: 0, limit: 100},
   };
-  const next = jest.fn();
-  profiler.postFunction.apply(_this, [{}, next]);
+  profiler.postFunction.apply(_this, [{}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything(),
   );
-  expect(next).toBeCalled();
 });
 
-test('Show the error message at the console when the explain query got error.', () => {
+test('Show the error message at the console when the explain query got error.', async () => {
   jest.spyOn(console, 'error');
-  const profiler = new Profiler();
-  const _this = {
-    _collection: {
-      find: jest.fn((conditions, options, callback) => {
-        const error = 'fake error';
-        callback(error, null);
-        expect(console.error).toBeCalledWith(error);
-      }),
-    },
-    op: 'find',
-    _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100},
-  };
-  profiler.postFunction.apply(_this, [{}, () => {}]);
-  expect(_this._collection.find).toBeCalledWith(
-    {state: 'active'},
-    {explain: true, skip: 0, limit: 100},
-    expect.anything(),
-  );
-});
-
-test('Show the query information at the console.', () => {
   const profiler = new Profiler();
   const _this = {
     mongooseCollection: {
@@ -81,15 +60,33 @@ test('Show the query information at the console.', () => {
       $print: jest.fn(),
     },
     _collection: {
-      find: jest.fn((conditions, options, callback) => {
+      find: jest.fn(async () => {
+        throw new Error('fake error');
+      }),
+    },
+    op: 'find',
+    _conditions: {state: 'active'},
+    options: {skip: 0, limit: 100},
+  };
+  await profiler.postFunction.apply(_this, [{}]);
+  expect(_this._collection.find).toBeCalledWith(
+    {state: 'active'},
+    {explain: true, skip: 0, limit: 100},
+  );
+  expect(console.error).toBeCalledWith(new Error('fake error'));
+});
+
+test('Show the query information at the console.', async () => {
+  const profiler = new Profiler();
+  const _this = {
+    mongooseCollection: {
+      collectionName: 'CollectionName',
+      $print: jest.fn(),
+    },
+    _collection: {
+      find: jest.fn(async () => {
         jest.spyOn(console, 'dir');
-        callback(null, explainResult.withoutCollectionScan);
-        expect(_this.mongooseCollection.$print).toBeCalledWith(
-          '      1ms CollectionName',
-          'find',
-          [_this._conditions, _this.options],
-        );
-        expect(console.dir).not.toBeCalled();
+        return explainResult.withoutCollectionScan;
       }),
     },
     op: 'find',
@@ -99,77 +96,21 @@ test('Show the query information at the console.', () => {
   MockDate.set(new Date('2019-04-15T00:00:00.000Z'));
   profiler.preFunction.apply(_this);
   MockDate.set(new Date('2019-04-15T00:00:00.001Z'));
-  profiler.postFunction.apply(_this, [{}, () => {}]);
+  await profiler.postFunction.apply(_this, [{}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything(),
   );
+  expect(_this.mongooseCollection.$print).toBeCalledWith(
+    '      1ms CollectionName',
+    'find',
+    [_this._conditions, _this.options],
+  );
+  expect(console.dir).not.toBeCalled();
 });
 
-test('Show the explain result at the console.', () => {
-  const profiler = new Profiler({
-    isAlwaysShowQuery: false,
-  });
-  const _this = {
-    mongooseCollection: {
-      $print: jest.fn(),
-    },
-    _collection: {
-      find: jest.fn((conditions, options, callback) => {
-        jest.spyOn(console, 'dir');
-        callback(null, explainResult.withCollectionScan);
-        expect(_this.mongooseCollection.$print).toHaveBeenCalled();
-        expect(console.dir).toBeCalledWith(
-          explainResult.withCollectionScan,
-          {depth: null, colors: true},
-        );
-      }),
-    },
-    op: 'find',
-    _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100},
-  };
-  profiler.postFunction.apply(_this, [{}, () => {}]);
-  expect(_this._collection.find).toBeCalledWith(
-    {state: 'active'},
-    {explain: true, skip: 0, limit: 100},
-    expect.anything(),
-  );
-});
-
-test('Show the explain result at the console when the total docs examined is over.', () => {
-  const profiler = new Profiler({
-    totalDocsExamined: 0,
-  });
-  const _this = {
-    mongooseCollection: {
-      $print: jest.fn(),
-    },
-    _collection: {
-      find: jest.fn((conditions, options, callback) => {
-        jest.spyOn(console, 'dir');
-        callback(null, explainResult.withoutCollectionScan);
-        expect(_this.mongooseCollection.$print).toHaveBeenCalled();
-        expect(console.dir).toBeCalledWith(
-          explainResult.withoutCollectionScan,
-          {depth: null, colors: true},
-        );
-      }),
-    },
-    op: 'find',
-    _conditions: {state: 'active'},
-    options: {skip: 0, limit: 100},
-  };
-  profiler.postFunction.apply(_this, [{}, () => {}]);
-  expect(_this._collection.find).toBeCalledWith(
-    {state: 'active'},
-    {explain: true, skip: 0, limit: 100},
-    expect.anything(),
-  );
-});
-
-test('Does not show anything for the index scan query.', () => {
+test('Show the explain result at the console.', async () => {
+  jest.spyOn(console, 'dir');
   const profiler = new Profiler({
     isAlwaysShowQuery: false,
   });
@@ -179,26 +120,85 @@ test('Does not show anything for the index scan query.', () => {
       $print: jest.fn(),
     },
     _collection: {
-      find: jest.fn((conditions, options, callback) => {
-        jest.spyOn(console, 'dir');
-        callback(null, explainResult.withoutCollectionScan);
-        expect(_this.mongooseCollection.$print).not.toBeCalled();
-        expect(console.dir).not.toBeCalled();
+      find: jest.fn(async () => {
+        return explainResult.withCollectionScan;
       }),
     },
     op: 'find',
     _conditions: {state: 'active'},
     options: {skip: 0, limit: 100},
   };
-  profiler.postFunction.apply(_this, [{}, () => {}]);
+  await profiler.postFunction.apply(_this, [{}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything(),
+  );
+  expect(_this.mongooseCollection.$print).toHaveBeenCalled();
+  expect(console.dir).toBeCalledWith(
+    explainResult.withCollectionScan,
+    {depth: null, colors: true},
   );
 });
 
-test('Call custom log function to explain the result.', () => {
+test('Show the explain result at the console when the total docs examined is over.', async () => {
+  jest.spyOn(console, 'dir');
+  const profiler = new Profiler({
+    totalDocsExamined: 0,
+  });
+  const _this = {
+    mongooseCollection: {
+      $print: jest.fn(),
+    },
+    _collection: {
+      find: jest.fn(async () => {
+        return explainResult.withoutCollectionScan;
+      }),
+    },
+    op: 'find',
+    _conditions: {state: 'active'},
+    options: {skip: 0, limit: 100},
+  };
+  await profiler.postFunction.apply(_this, [{}, () => {}]);
+  expect(_this._collection.find).toBeCalledWith(
+    {state: 'active'},
+    {explain: true, skip: 0, limit: 100},
+  );
+  expect(_this.mongooseCollection.$print).toHaveBeenCalled();
+  expect(console.dir).toBeCalledWith(
+    explainResult.withoutCollectionScan,
+    {depth: null, colors: true},
+  );
+});
+
+test('Does not show anything for the index scan query.', async () => {
+  jest.spyOn(console, 'dir');
+  const profiler = new Profiler({
+    isAlwaysShowQuery: false,
+  });
+  const _this = {
+    mongooseCollection: {
+      collectionName: 'CollectionName',
+      $print: jest.fn(),
+    },
+    _collection: {
+      find: jest.fn(async () => {
+        return explainResult.withoutCollectionScan;
+      }),
+    },
+    op: 'find',
+    _conditions: {state: 'active'},
+    options: {skip: 0, limit: 100},
+  };
+  await profiler.postFunction.apply(_this, [{}]);
+  expect(_this._collection.find).toBeCalledWith(
+    {state: 'active'},
+    {explain: true, skip: 0, limit: 100},
+  );
+  expect(_this.mongooseCollection.$print).not.toBeCalled();
+  expect(console.dir).not.toBeCalled();
+});
+
+test('Call custom log function to explain the result.', async () => {
   const logFunction = jest.fn(result => result);
 
   const profiler = new Profiler({
@@ -212,27 +212,26 @@ test('Call custom log function to explain the result.', () => {
       $print: jest.fn(),
     },
     _collection: {
-      find: jest.fn((conditions, options, callback) => {
-        callback(null, explainResult.withCollectionScan);
-        expect(_this.mongooseCollection.$print).toHaveBeenCalled();
-        expect(logFunction).toBeCalledWith(
-          explainResult.withCollectionScan,
-        );
+      find: jest.fn(async () => {
+        return explainResult.withCollectionScan;
       }),
     },
     op: 'find',
     _conditions: {state: 'active'},
     options: {skip: 0, limit: 100},
   };
-  profiler.postFunction.apply(_this, [{}, () => {}]);
+  await profiler.postFunction.apply(_this, [{}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything(),
+  );
+  expect(_this.mongooseCollection.$print).toHaveBeenCalled();
+  expect(logFunction).toBeCalledWith(
+    explainResult.withCollectionScan,
   );
 });
 
-test('Call custom error log function when the explain query got error.', () => {
+test('Call custom error log function when the explain query got error.', async () => {
   const logError = jest.fn(result => result);
   const profiler = new Profiler({
     logger: {
@@ -241,20 +240,18 @@ test('Call custom error log function when the explain query got error.', () => {
   });
   const _this = {
     _collection: {
-      find: jest.fn((conditions, options, callback) => {
-        const error = 'fake error';
-        callback(error, null);
-        expect(logError).toBeCalledWith(error);
+      find: jest.fn(async () => {
+        throw new Error('fake error');
       }),
     },
     op: 'find',
     _conditions: {state: 'active'},
     options: {skip: 0, limit: 100},
   };
-  profiler.postFunction.apply(_this, [{}, () => {}]);
+  await profiler.postFunction.apply(_this, [{}]);
   expect(_this._collection.find).toBeCalledWith(
     {state: 'active'},
     {explain: true, skip: 0, limit: 100},
-    expect.anything(),
   );
+  expect(logError).toBeCalledWith(new Error('fake error'));
 });
