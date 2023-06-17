@@ -120,9 +120,7 @@ test('Show the explain result at the console.', async () => {
       $print: jest.fn(),
     },
     _collection: {
-      find: jest.fn(async () => {
-        return explainResult.withCollectionScan;
-      }),
+      find: jest.fn(async () => explainResult.withCollectionScan),
     },
     op: 'find',
     _conditions: {state: 'active'},
@@ -150,9 +148,7 @@ test('Show the explain result at the console when the total docs examined is ove
       $print: jest.fn(),
     },
     _collection: {
-      find: jest.fn(async () => {
-        return explainResult.withoutCollectionScan;
-      }),
+      find: jest.fn(async () => explainResult.withoutCollectionScan),
     },
     op: 'find',
     _conditions: {state: 'active'},
@@ -181,9 +177,7 @@ test('Does not show anything for the index scan query.', async () => {
       $print: jest.fn(),
     },
     _collection: {
-      find: jest.fn(async () => {
-        return explainResult.withoutCollectionScan;
-      }),
+      find: jest.fn(async () => explainResult.withoutCollectionScan),
     },
     op: 'find',
     _conditions: {state: 'active'},
@@ -212,9 +206,7 @@ test('Call custom log function to explain the result.', async () => {
       $print: jest.fn(),
     },
     _collection: {
-      find: jest.fn(async () => {
-        return explainResult.withCollectionScan;
-      }),
+      find: jest.fn(async () => explainResult.withCollectionScan),
     },
     op: 'find',
     _conditions: {state: 'active'},
